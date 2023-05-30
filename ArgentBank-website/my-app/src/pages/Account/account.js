@@ -9,8 +9,7 @@ import Account from "../../components/Account/Account";
 
 function Profil() {
   // Use State
-  let [newFirstName, setNewFirstName] = useState("");
-  let [newLastName, setNewLastName] = useState("");
+  const [newUsername, setNewUsername] = useState("");
 
   // Use Selector / Use Effect
   const dispatch = useDispatch();
@@ -28,29 +27,25 @@ function Profil() {
     });
   }, []);
 
-  // Edit name
+  // Edit username
   const handleEdit = () => {
-    document.getElementById("fullName").style.display = "none";
+    document.getElementById("username-input").style.display = "block";
     document.getElementById("edit-button").style.display = "none";
     document.getElementById("edit-section").style.display = "block";
   };
 
   // Save Edit
   const handleEditSave = () => {
-    document.getElementById("fullName").style.display = "block";
+    document.getElementById("username-input").style.display = "none";
     document.getElementById("edit-button").style.display = "initial";
     document.getElementById("edit-section").style.display = "none";
-    dispatch(getFirstName(newFirstName));
-    dispatch(getLastName(newLastName));
-    const fullName = { firstName: newFirstName, lastName: newLastName };
-    saveUserProfil(token, fullName);
+    dispatch(getFirstName(newUsername));
+    saveUserProfil(token, { username: newUsername });
   };
-
-  console.log(handleEditSave);
 
   // Cancel Edit
   const handleEditCancel = () => {
-    document.getElementById("fullName").style.display = "block";
+    document.getElementById("username-input").style.display = "none";
     document.getElementById("edit-button").style.display = "initial";
     document.getElementById("edit-section").style.display = "none";
   };
@@ -62,32 +57,29 @@ function Profil() {
     <main className="bg-dark">
       <div className="header">
         <h1 id="welcome-name">
-          Welcome back
-          <br />
-          <span id="fullName">
-            {firstName} {lastName}
-          </span>
+          {newUsername
+            ? `Welcome back, ${newUsername}`
+            : `Welcome back, ${firstName} ${lastName}`}
         </h1>
         <button id="edit-button" type="button" onClick={handleEdit}>
           Edit Name
         </button>
-        <div id="edit-section">
+        <div id="edit-section" style={{ display: "none", textAlign: "center" }}>
           <form name="edit">
-            <div className="profil-input-wrapper">
+            <div className="profil-input-wrapper" style={{ border: "none" }}>
               <input
+                id="username-input"
                 type="text"
-                placeholder={firstName}
-                onChange={(e) => setNewFirstName(e.target.value)}
+                placeholder="Username"
+                onChange={(e) => setNewUsername(e.target.value)}
                 required
               />
             </div>
-            <div className="profil-input-wrapper">
-              <input
-                type="text"
-                placeholder={lastName}
-                onChange={(e) => setNewLastName(e.target.value)}
-                required
-              />
+            <div className="profil-input-wrapper" style={{ border: "none" }}>
+              <input type="text" value={firstName} readOnly />
+            </div>
+            <div className="profil-input-wrapper" style={{ border: "none" }}>
+              <input type="text" value={lastName} readOnly />
             </div>
           </form>
           <div className="btn-form">

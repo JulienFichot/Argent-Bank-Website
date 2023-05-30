@@ -37,14 +37,14 @@ export const getLoginFetch = async (token) => {
 };
 
 /* Save the new name */
-export const saveUserProfil = async (token, fullName) => {
+export const saveUserProfil = async (token, username) => {
   const URL_API = "http://localhost:3001/api/v1/user/profile";
 
   const saveUserProfilResponse = await fetch(URL_API, {
-    body: JSON.stringify(fullName),
+    body: JSON.stringify({ username }),
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer" + token,
+      Authorization: "Bearer " + token,
     },
     method: "PUT",
   }).then((response) => response.json());
